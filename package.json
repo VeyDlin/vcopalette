@@ -1,0 +1,12 @@
+{
+    "name": "vcopalette-workspace",
+    "private": true,
+    "type": "module",
+    "workspaces": ["packages/*", "playground"],
+    "scripts": {
+        "dev": "npm run dev -w vcopalette-playground",
+        "test": "npm test -w vcopalette",
+        "typecheck": "npm run typecheck -w vcopalette && npm run typecheck -w vcopalette-playground",
+        "build": "npm run build -w vcopalette"
+    }
+}

@@ -1,0 +1,62 @@
+{
+    "name": "vcopalette",
+    "version": "0.1.0",
+    "description": "Pinned OKLCH palette generator: pin a designer's exact colors, get consistent scales and themes.",
+    "type": "module",
+    "license": "MIT",
+    "repository": {
+        "type": "git",
+        "url": "git+https://github.com/VeyDlin/vcopalette.git",
+        "directory": "packages/vcopalette"
+    },
+    "keywords": [
+        "palette",
+        "oklch",
+        "color",
+        "design-tokens",
+        "tailwind",
+        "nuxt-ui",
+        "theme"
+    ],
+    "sideEffects": false,
+    "files": [
+        "dist"
+    ],
+    "exports": {
+        ".": {
+            "types": "./dist/index.d.mts",
+            "import": "./dist/index.mjs"
+        },
+        "./css": {
+            "types": "./dist/css.d.mts",
+            "import": "./dist/css.mjs"
+        },
+        "./tailwind": {
+            "types": "./dist/tailwind.d.mts",
+            "import": "./dist/tailwind.mjs"
+        },
+        "./nuxt-ui": {
+            "types": "./dist/nuxt-ui.d.mts",
+            "import": "./dist/nuxt-ui.mjs"
+        },
+        "./dtcg": {
+            "types": "./dist/dtcg.d.mts",
+            "import": "./dist/dtcg.mjs"
+        }
+    },
+    "scripts": {
+        "build": "tsdown",
+        "test": "vitest run",
+        "typecheck": "tsc --noEmit"
+    },
+    "dependencies": {
+        "culori": "^4.0.2"
+    },
+    "devDependencies": {
+        "@types/culori": "^4.0.1",
+        "tsdown": "^0.23.1",
+        "typescript": "^5.9.3",
+        "unrun": "^0.3.1",
+        "vitest": "^5.0.3"
+    }
+}
