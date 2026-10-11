@@ -10,6 +10,7 @@ import { referenceConfig } from './fixtures/reference';
 const TOLERANCE: number = 0.004;
 const HUE_TOLERANCE: number = 2;
 const NEAR_BLACK_L: number = 0.15;
+const SNAPSHOT_PRECISION: number = 10000;
 
 
 function hexOf(color: string): string {
@@ -37,6 +38,23 @@ function angularDistance(a: number, b: number): number {
     const difference: number = Math.abs(a - b) % 360;
 
     return Math.min(difference, 360 - difference);
+}
+
+function round(value: number): number {
+    return Math.round(value * SNAPSHOT_PRECISION) / SNAPSHOT_PRECISION;
+}
+
+function snapshotOf(palette: Palette): Palette {
+    const result: Palette = {};
+
+    for (const [color, tokens] of Object.entries(palette)) {
+        result[color] = tokens.map((token: PaletteToken): PaletteToken => ({
+            ...token,
+            oklch: { l: round(token.oklch.l), c: round(token.oklch.c), h: round(token.oklch.h) },
+        }));
+    }
+
+    return result;
 }
 
 function strengthConfig(strength: number | { l: number; c: number }): PaletteConfig {
@@ -149,7 +167,8 @@ describe('generate', (): void => {
     });
 
     it('matches the reference snapshot', (): void => {
-        expect(generate(referenceConfig)).toMatchSnapshot();
+        // OKLCH is rounded because Node/V8 versions differ in the last float digits of pow/cbrt.
+        expect(snapshotOf(generate(referenceConfig))).toMatchSnapshot();
     });
 });
 
