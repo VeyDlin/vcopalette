@@ -11,6 +11,8 @@ on:
 
 permissions:
   contents: write
+  # npm trusted publishing: the job's OIDC token replaces a stored npm token.
+  id-token: write
 
 jobs:
   release:
@@ -18,10 +20,10 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout repository
-        uses: actions/checkout@v4
+        uses: actions/checkout@v5
 
       - name: Setup Node.js
-        uses: actions/setup-node@v4
+        uses: actions/setup-node@v5
         with:
           node-version: 24
           registry-url: https://registry.npmjs.org
@@ -44,6 +46,10 @@ jobs:
         if: steps.version.outputs.publish == 'true'
         run: npm ci
 
+      - name: Update npm for trusted publishing
+        if: steps.version.outputs.publish == 'true'
+        run: npm install -g npm@latest
+
       - name: Type-check
         if: steps.version.outputs.publish == 'true'
         run: npm run typecheck -w vcopalette
@@ -59,8 +65,6 @@ jobs:
       - name: Publish to npm
         if: steps.version.outputs.publish == 'true'
         run: npm publish --access public -w vcopalette
-        env:
-          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
 
       - name: Create GitHub Release
         if: steps.version.outputs.publish == 'true'

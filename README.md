@@ -20,7 +20,7 @@ npm run build       # build the package
 ## Releasing
 
 1. Bump `version` in `packages/vcopalette/package.json` and push to `main` or `master`.
-2. The Release workflow (`.github/workflows/release.yml`) compares that version with npm. If it is new, it type-checks, tests and builds the package, publishes it to npm with the `NPM_TOKEN` secret, then tags `v<version>` and creates a GitHub Release with generated notes.
+2. The Release workflow (`.github/workflows/release.yml`) compares that version with npm. If it is new, it type-checks, tests and builds the package, publishes it to npm through trusted publishing (GitHub OIDC, configured on the package's npm settings page, no stored token), then tags `v<version>` and creates a GitHub Release with generated notes.
 
 To release without a version bump, run the Release workflow manually. If the version is already on npm, the workflow skips publishing.
 
